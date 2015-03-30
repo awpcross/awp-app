@@ -18,8 +18,14 @@
 	<preference name="UIWebViewBounce" value="false"/>
 	<preference name="DisallowOverscroll" value="true"/>
     <preference name="BackupWebStorage" value="none" />
-
     <feature name="StatusBar">
       <param name="ios-package" value="CDVStatusBar" onload="true" />
     </feature>
+	
+	<!-- Phonegap Build config -->
+	<gap:platform name="ios" />
+	<!--gap:platform name="android" /-->	
+	<!-- // Phonegap Build config -->
+
+	
 </widget>
