@@ -1,6 +1,6 @@
-angular.module('starter.services', [])
+angular.module('starter.services', ['appconfig'])
 
-.service('LoginService', function($q) {
+.service('LoginService', ['$q', 'ENV', function($q, env) {
 	
 	console.log('LoginService | starting... ');
 
@@ -8,12 +8,41 @@ angular.module('starter.services', [])
         loginUser: function(name, pw) {
             var deferred = $q.defer();
             var promise = deferred.promise;
- 
-            if (name == 'p' && pw == 'e') {
-                deferred.resolve('Welcome ' + name + '!');
-            } else {
-                deferred.reject('Wrong credentials.');
-            }
+
+			console.log('LoginService | using appconfig.ENV : "' + env +'"');
+			if ( env == 'dev-nobackend') {
+				deferred.resolve('Welcome ' + name + '!');
+			} else {	
+
+					console.log('LoginService | calling deployd service ... ');
+		
+			dpd.users.login({username: name, password: pw}, function(session, error) {
+				if (error) {
+				  console.log('error : ' + error.message);
+				  deferred.reject('Wrong credentials.');
+				  
+
+
+				} else {
+				  console.log('success !');
+
+				  deferred.resolve('Welcome ' + name + '!');
+				//location.href = "/welcome.html";
+
+
+
+				}
+			});
+			console.log('LoginService | done deployd ... ');
+
+			
+			/*	if (name == 'p' && pw == 'e') {
+					deferred.resolve('Welcome ' + name + '!');
+				} else {
+					deferred.reject('Wrong credentials.');
+				}
+			*/
+			}
             promise.success = function(fn) {
                 promise.then(fn);
                 return promise;
@@ -27,7 +56,7 @@ angular.module('starter.services', [])
     }
 	console.log('LoginService | done. ') ;
 	
-})
+}]);
 
 /*
 .factory('Chats', function() {

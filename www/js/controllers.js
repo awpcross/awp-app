@@ -65,8 +65,10 @@ angular.module('starter.controllers', ['ngCordova'])
 	console.log('CrossNewsCtrl | done. ') ;
 })
 
-.controller('TrophiesCtrl', function($scope, $state, $ionicModal) {
+.controller('TrophiesCtrl', function($scope, $state, $ionicModal, $timeout) {
 	console.log('TrophiesCtrl | start');
+
+	
 	
 	$scope.contact = {
 		firstname: 'John',
@@ -84,7 +86,8 @@ angular.module('starter.controllers', ['ngCordova'])
 		scope: $scope,
 		animation: 'slide-in-up'
 	}).then(function(modal) {
-		$scope.modal = modal
+		$scope.modal = modal;
+		$scope.modal.show();
 	})  
 
   $scope.openModal = function() {
@@ -98,10 +101,10 @@ angular.module('starter.controllers', ['ngCordova'])
   $scope.$on('$destroy', function() {
     $scope.modal.remove();
   });
-  
 	// Execute action on hide modal
 	$scope.$on('$ionicView.afterEnter', function() {
 		console.log('$ionicView.loaded event captured | start');
+		// TODO : check if first render of the modal, event should not show the modal (done through the promise (.then()))
 		$scope.modal.show();
 		console.log('$ionicView.loaded event captured | end');
 	});
